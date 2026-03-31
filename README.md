@@ -40,11 +40,21 @@ npx tsx coingecko/token_prices.ts
 
 ### Python
 
+The Python SDK uses the Node bridge to run all CoinGecko recipes:
+
 ```bash
 cd recipes/python
 export SELA_API_KEY=sk_live_your_key
+
+# Run all recipes
 python example_bridge.py
+
+# Run specific recipes
+python example_bridge.py token_prices
+python example_bridge.py categories_market_cap chains_ranking
 ```
+
+Available recipes: `token_prices`, `categories_market_cap`, `chains_ranking`, `charts_global`, `crypto_gainers_losers`, `exchanges_cex`, `exchanges_derivatives`, `exchanges_dex`, `highlights_trending`, `new_cryptocurrencies`, `nft_floor_price`, `treasuries_holdings`
 
 ## Project Structure
 

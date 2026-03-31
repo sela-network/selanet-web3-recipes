@@ -22,7 +22,7 @@ interface ExchangeCex {
   sparkline: string;
 }
 
-function parseMarkdownTable(markdown: string): ExchangeCex[] {
+export function parseMarkdownTable(markdown: string): ExchangeCex[] {
   const lines = markdown.split("\n");
   const results: ExchangeCex[] = [];
 
@@ -86,4 +86,5 @@ async function main() {
   console.log(JSON.stringify(exchanges, null, 2));
 }
 
-main();
+const isDirectRun = process.argv[1]?.endsWith("exchanges_cex.ts") || process.argv[1]?.endsWith("exchanges_cex.js");
+if (isDirectRun) main();

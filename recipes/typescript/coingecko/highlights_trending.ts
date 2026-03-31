@@ -144,7 +144,7 @@ function findSectionBounds(
   return bounds;
 }
 
-function parseHighlights(markdown: string): HighlightsResult {
+export function parseHighlights(markdown: string): HighlightsResult {
   const lines = markdown.split("\n");
 
   // Use emoji-specific markers to avoid ambiguity with tab navigation text
@@ -201,4 +201,5 @@ async function main() {
   console.log(JSON.stringify(result, null, 2));
 }
 
-main();
+const isDirectRun = process.argv[1]?.endsWith("highlights_trending.ts") || process.argv[1]?.endsWith("highlights_trending.js");
+if (isDirectRun) main();

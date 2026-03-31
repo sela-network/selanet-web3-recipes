@@ -13,6 +13,8 @@ Usage:
         print(tokens[0]["name"])
 """
 
+from __future__ import annotations
+
 import json
 import os
 import subprocess

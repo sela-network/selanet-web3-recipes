@@ -24,7 +24,7 @@ interface GlobalCharts {
   total_categories_tracked: number;
 }
 
-function parseGlobalCharts(markdown: string): GlobalCharts {
+export function parseGlobalCharts(markdown: string): GlobalCharts {
   const result: GlobalCharts = {
     market_cap: "",
     market_cap_change_24h: 0,
@@ -102,4 +102,5 @@ async function main() {
   console.log(JSON.stringify(globalCharts, null, 2));
 }
 
-main();
+const isDirectRun = process.argv[1]?.endsWith("charts_global.ts") || process.argv[1]?.endsWith("charts_global.js");
+if (isDirectRun) main();

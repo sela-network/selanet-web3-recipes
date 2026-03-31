@@ -29,7 +29,7 @@ interface TreasuryHolding {
   mnav: string;
 }
 
-function parseMarkdownTable(markdown: string): TreasuryHolding[] {
+export function parseMarkdownTable(markdown: string): TreasuryHolding[] {
   const lines = markdown.split("\n");
   const results: TreasuryHolding[] = [];
 
@@ -96,4 +96,5 @@ async function main() {
   console.log(JSON.stringify(treasuries, null, 2));
 }
 
-main();
+const isDirectRun = process.argv[1]?.endsWith("treasuries_holdings.ts") || process.argv[1]?.endsWith("treasuries_holdings.js");
+if (isDirectRun) main();

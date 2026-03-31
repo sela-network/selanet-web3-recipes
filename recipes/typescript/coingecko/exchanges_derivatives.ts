@@ -26,7 +26,7 @@ interface ExchangeDerivatives {
   sparkline_volume: string;
 }
 
-function parseMarkdownTable(markdown: string): ExchangeDerivatives[] {
+export function parseMarkdownTable(markdown: string): ExchangeDerivatives[] {
   const lines = markdown.split("\n");
   const results: ExchangeDerivatives[] = [];
 
@@ -91,4 +91,5 @@ async function main() {
   console.log(JSON.stringify(exchanges, null, 2));
 }
 
-main();
+const isDirectRun = process.argv[1]?.endsWith("exchanges_derivatives.ts") || process.argv[1]?.endsWith("exchanges_derivatives.js");
+if (isDirectRun) main();

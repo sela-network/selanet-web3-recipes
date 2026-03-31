@@ -53,7 +53,7 @@ function parseSparkline(cell: string): string {
   return "";
 }
 
-function parseMarkdownTable(markdown: string): CategoryMarketCap[] {
+export function parseMarkdownTable(markdown: string): CategoryMarketCap[] {
   const lines = markdown.split("\n");
   const results: CategoryMarketCap[] = [];
 
@@ -111,4 +111,5 @@ async function main() {
   console.log(JSON.stringify(categories, null, 2));
 }
 
-main();
+const isDirectRun = process.argv[1]?.endsWith("categories_market_cap.ts") || process.argv[1]?.endsWith("categories_market_cap.js");
+if (isDirectRun) main();

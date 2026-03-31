@@ -66,7 +66,7 @@ function parseRows(lines: string[]): GainerLoser[] {
   return results;
 }
 
-function parseMarkdown(markdown: string): GainersLosersResult {
+export function parseMarkdown(markdown: string): GainersLosersResult {
   const lines = markdown.split("\n");
 
   let gainersStart = -1;
@@ -98,4 +98,5 @@ async function main() {
   console.log(JSON.stringify(result, null, 2));
 }
 
-main();
+const isDirectRun = process.argv[1]?.endsWith("crypto_gainers_losers.ts") || process.argv[1]?.endsWith("crypto_gainers_losers.js");
+if (isDirectRun) main();

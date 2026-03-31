@@ -49,7 +49,7 @@ function parseTopGainers(cell: string): TopGainer[] {
   return gainers;
 }
 
-function parseMarkdownTable(markdown: string): ChainRanking[] {
+export function parseMarkdownTable(markdown: string): ChainRanking[] {
   const lines = markdown.split("\n");
   const results: ChainRanking[] = [];
 
@@ -116,4 +116,5 @@ async function main() {
   console.log(JSON.stringify(chains, null, 2));
 }
 
-main();
+const isDirectRun = process.argv[1]?.endsWith("chains_ranking.ts") || process.argv[1]?.endsWith("chains_ranking.js");
+if (isDirectRun) main();

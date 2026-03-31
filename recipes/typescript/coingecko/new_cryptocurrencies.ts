@@ -27,7 +27,7 @@ interface NewCrypto {
   last_added: string;
 }
 
-function parseMarkdownTable(markdown: string): NewCrypto[] {
+export function parseMarkdownTable(markdown: string): NewCrypto[] {
   const lines = markdown.split("\n");
   const results: NewCrypto[] = [];
 
@@ -83,4 +83,5 @@ async function main() {
   console.log(JSON.stringify(coins, null, 2));
 }
 
-main();
+const isDirectRun = process.argv[1]?.endsWith("new_cryptocurrencies.ts") || process.argv[1]?.endsWith("new_cryptocurrencies.js");
+if (isDirectRun) main();

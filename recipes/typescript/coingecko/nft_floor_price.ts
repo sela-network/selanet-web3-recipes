@@ -30,7 +30,7 @@ interface NftFloorPrice {
   sales_24h: string;
 }
 
-function parseMarkdownTable(markdown: string): NftFloorPrice[] {
+export function parseMarkdownTable(markdown: string): NftFloorPrice[] {
   const lines = markdown.split("\n");
   const results: NftFloorPrice[] = [];
 
@@ -120,4 +120,5 @@ async function main() {
   console.log(JSON.stringify(nfts, null, 2));
 }
 
-main();
+const isDirectRun = process.argv[1]?.endsWith("nft_floor_price.ts") || process.argv[1]?.endsWith("nft_floor_price.js");
+if (isDirectRun) main();

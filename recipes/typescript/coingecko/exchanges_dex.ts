@@ -24,7 +24,7 @@ interface ExchangeDex {
   most_traded_pair: string;
 }
 
-function parseMarkdownTable(markdown: string): ExchangeDex[] {
+export function parseMarkdownTable(markdown: string): ExchangeDex[] {
   const lines = markdown.split("\n");
   const results: ExchangeDex[] = [];
 
@@ -90,4 +90,5 @@ async function main() {
   console.log(JSON.stringify(exchanges, null, 2));
 }
 
-main();
+const isDirectRun = process.argv[1]?.endsWith("exchanges_dex.ts") || process.argv[1]?.endsWith("exchanges_dex.js");
+if (isDirectRun) main();
