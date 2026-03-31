@@ -29,6 +29,14 @@ import { parseMarkdownTable as parseNewCryptocurrencies } from "./coingecko/new_
 import { parseMarkdownTable as parseNftFloorPrice } from "./coingecko/nft_floor_price.js";
 import { parseMarkdownTable as parseTreasuriesHoldings } from "./coingecko/treasuries_holdings.js";
 
+import { parseMarkdownTable as parseRdExchangesRanking } from "./rootdata/exchanges_ranking.js";
+import { parseMarkdownTable as parseRdFundraising } from "./rootdata/fundraising.js";
+import { parseMarkdownTable as parseRdInvestors } from "./rootdata/investors.js";
+import { parseMarkdownTable as parseRdPeople } from "./rootdata/people.js";
+import { parseMarkdownTable as parseRdProjects } from "./rootdata/projects.js";
+import { parseMarkdownTable as parseRdRankingsSoaring } from "./rootdata/rankings_soaring.js";
+import { parseMarkdownTable as parseRdTokenUnlocks } from "./rootdata/token_unlocks.js";
+
 interface Recipe {
   url: string;
   parse: (markdown: string) => unknown;
@@ -82,6 +90,34 @@ const recipes: Record<string, Recipe> = {
   "coingecko/treasuries_holdings": {
     url: "https://www.coingecko.com/en/treasuries",
     parse: parseTreasuriesHoldings,
+  },
+  "rootdata/exchanges_ranking": {
+    url: "https://www.rootdata.com/exchanges/ranking",
+    parse: parseRdExchangesRanking,
+  },
+  "rootdata/fundraising": {
+    url: "https://www.rootdata.com/Fundraising",
+    parse: parseRdFundraising,
+  },
+  "rootdata/investors": {
+    url: "https://www.rootdata.com/Investors",
+    parse: parseRdInvestors,
+  },
+  "rootdata/people": {
+    url: "https://www.rootdata.com/people",
+    parse: parseRdPeople,
+  },
+  "rootdata/projects": {
+    url: "https://www.rootdata.com/Projects",
+    parse: parseRdProjects,
+  },
+  "rootdata/rankings_soaring": {
+    url: "https://www.rootdata.com/rankings/soaring",
+    parse: parseRdRankingsSoaring,
+  },
+  "rootdata/token_unlocks": {
+    url: "https://www.rootdata.com/token-unlocks",
+    parse: parseRdTokenUnlocks,
   },
 };
 

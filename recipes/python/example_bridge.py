@@ -1,5 +1,5 @@
 """
-Example: Using the Node bridge to get parsed CoinGecko data.
+Example: Using the Node bridge to get parsed Web3 data.
 
 Usage:
     python example_bridge.py                          # run all recipes
@@ -104,7 +104,60 @@ def show_treasuries_holdings(sela: Selanet):
         print(f"  #{t['rank']} {t['entity']} ({t['type']}): value ${t['todays_value_usd']:,.0f}")
 
 
+def show_rd_exchanges_ranking(sela: Selanet):
+    print("\n=== RootData: Exchange Rankings ===")
+    exchanges = sela.run("rootdata/exchanges_ranking")
+    for e in exchanges[:10]:
+        print(f"  #{e['rank']} {e['name']}: transparency {e['transparency_score']}  overall {e['overall_score']}")
+
+
+def show_rd_fundraising(sela: Selanet):
+    print("\n=== RootData: Fundraising ===")
+    rounds = sela.run("rootdata/fundraising")
+    for r in rounds[:10]:
+        investors = ", ".join(i["name"] for i in r["investors"][:3])
+        print(f"  {r['project']}: {r['round']} {r['amount']}  {r['date']}  [{investors}]")
+
+
+def show_rd_investors(sela: Selanet):
+    print("\n=== RootData: Investors ===")
+    investors = sela.run("rootdata/investors")
+    for i in investors[:10]:
+        print(f"  {i['name']}: portfolio {i['portfolio']}  rounds/yr {i['rounds_1yr']}  raised {i['total_raised']}")
+
+
+def show_rd_people(sela: Selanet):
+    print("\n=== RootData: People ===")
+    people = sela.run("rootdata/people")
+    for p in people[:10]:
+        print(f"  {p['name']}: {p['position']} @ {p['company']}")
+
+
+def show_rd_projects(sela: Selanet):
+    print("\n=== RootData: Projects ===")
+    projects = sela.run("rootdata/projects")
+    for p in projects[:10]:
+        tags = ", ".join(p["tags"][:3])
+        print(f"  {p['name']} ({p['symbol']}): [{tags}]  growth {p['growth_index']}  popularity {p['popularity_index']}")
+
+
+def show_rd_rankings_soaring(sela: Selanet):
+    print("\n=== RootData: Soaring Rankings ===")
+    projects = sela.run("rootdata/rankings_soaring")
+    for p in projects[:10]:
+        tags = ", ".join(p["tags"][:3])
+        print(f"  #{p['rank']} {p['name']}: [{tags}]  trend {p['popularity_trend_24h']}  rating {p['user_rating']}")
+
+
+def show_rd_token_unlocks(sela: Selanet):
+    print("\n=== RootData: Token Unlocks ===")
+    unlocks = sela.run("rootdata/token_unlocks")
+    for u in unlocks[:10]:
+        print(f"  #{u['rank']} {u['symbol']}: price {u['price']}  next unlock {u['next_unlock_value']}  in {u['unlock_countdown']}")
+
+
 RECIPES = {
+    # CoinGecko
     "token_prices": show_token_prices,
     "categories_market_cap": show_categories_market_cap,
     "chains_ranking": show_chains_ranking,
@@ -117,6 +170,14 @@ RECIPES = {
     "new_cryptocurrencies": show_new_cryptocurrencies,
     "nft_floor_price": show_nft_floor_price,
     "treasuries_holdings": show_treasuries_holdings,
+    # RootData
+    "rd_exchanges_ranking": show_rd_exchanges_ranking,
+    "rd_fundraising": show_rd_fundraising,
+    "rd_investors": show_rd_investors,
+    "rd_people": show_rd_people,
+    "rd_projects": show_rd_projects,
+    "rd_rankings_soaring": show_rd_rankings_soaring,
+    "rd_token_unlocks": show_rd_token_unlocks,
 }
 
 if __name__ == "__main__":

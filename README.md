@@ -20,6 +20,17 @@ A collection of example code for scraping data from major Web3 sites using the S
 | `nft_floor_price.ts` | NFT collection floor prices |
 | `treasuries_holdings.ts` | Treasury holdings data |
 
+### RootData
+| Recipe | Description |
+|--------|-------------|
+| `exchanges_ranking.ts` | Exchange transparency scores and rankings |
+| `fundraising.ts` | Recent crypto fundraising rounds |
+| `investors.ts` | Crypto investor/VC rankings |
+| `people.ts` | Crypto industry leaders directory |
+| `projects.ts` | Project listings with tags and indices |
+| `rankings_soaring.ts` | Trending/soaring project rankings |
+| `token_unlocks.ts` | Upcoming token unlock schedules |
+
 ## Quick Start
 
 ### TypeScript
@@ -64,6 +75,7 @@ selanet-web3-recipes/
     │   └── example_bridge.py    # Usage example
     └── typescript/
         ├── coingecko/     # CoinGecko recipes
+        ├── rootdata/      # RootData recipes
         └── utils.ts       # Shared Selanet API helpers
 ```
 
