@@ -20,6 +20,16 @@ A collection of example code for scraping data from major Web3 sites using the S
 | `nft_floor_price.ts` | NFT collection floor prices |
 | `treasuries_holdings.ts` | Treasury holdings data |
 
+### Etherscan
+| Recipe | Description |
+|--------|-------------|
+| `top_accounts.ts` | Top Ethereum accounts by ETH balance |
+| `tokens.ts` | Top ERC-20 tokens by market cap |
+| `blocks.ts` | Recent Ethereum blocks with gas and rewards |
+| `transactions.ts` | Recent Ethereum transactions |
+| `tx_detail.ts` | Detailed info for a specific transaction |
+| `block_detail.ts` | Detailed info for a specific block |
+
 ### RootData
 | Recipe | Description |
 |--------|-------------|
@@ -75,6 +85,7 @@ selanet-web3-recipes/
     │   └── example_bridge.py    # Usage example
     └── typescript/
         ├── coingecko/     # CoinGecko recipes
+        ├── etherscan/     # Etherscan recipes
         ├── rootdata/      # RootData recipes
         └── utils.ts       # Shared Selanet API helpers
 ```

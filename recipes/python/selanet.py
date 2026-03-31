@@ -84,9 +84,18 @@ class Selanet:
         self._proc.stdin.write(data.encode())
         self._proc.stdin.flush()
 
-    def run(self, recipe: str) -> list | dict:
-        """Run a recipe and return parsed JSON result."""
-        self._send_request({"recipe": recipe})
+    def run(self, recipe: str, params: dict | None = None) -> list | dict:
+        """Run a recipe and return parsed JSON result.
+
+        Args:
+            recipe: Recipe id (e.g. "coingecko/token_prices").
+            params: Optional parameters for parameterized recipes
+                    (e.g. {"hash": "0x..."} for etherscan/tx_detail).
+        """
+        req: dict = {"recipe": recipe}
+        if params:
+            req["params"] = params
+        self._send_request(req)
         resp = self._read_response()
         if not resp.get("ok"):
             raise SelanetError(resp.get("error", "Unknown error"))

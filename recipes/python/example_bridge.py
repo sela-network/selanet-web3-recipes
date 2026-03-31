@@ -156,6 +156,51 @@ def show_rd_token_unlocks(sela: Selanet):
         print(f"  #{u['rank']} {u['symbol']}: price {u['price']}  next unlock {u['next_unlock_value']}  in {u['unlock_countdown']}")
 
 
+def show_eth_top_accounts(sela: Selanet):
+    print("\n=== Etherscan: Top Accounts ===")
+    accounts = sela.run("etherscan/top_accounts")
+    for a in accounts[:10]:
+        print(f"  #{a['rank']} {a['address'][:16]}...  {a['name_tag']}  bal: {a['balance']}  txns: {a['txn_count']}")
+
+
+def show_eth_tokens(sela: Selanet):
+    print("\n=== Etherscan: ERC-20 Tokens ===")
+    tokens = sela.run("etherscan/tokens")
+    for t in tokens[:10]:
+        print(f"  #{t['rank']} {t['name']} ({t['symbol']}): {t['price']}  24h: {t['change_24h']}  holders: {t['holders']}")
+
+
+def show_eth_blocks(sela: Selanet):
+    print("\n=== Etherscan: Recent Blocks ===")
+    blocks = sela.run("etherscan/blocks")
+    for b in blocks[:10]:
+        print(f"  Block {b['block']}: {b['txn']} txns  gas {b['gas_used']}  reward {b['reward']}  {b['age']}")
+
+
+def show_eth_transactions(sela: Selanet):
+    print("\n=== Etherscan: Recent Transactions ===")
+    txs = sela.run("etherscan/transactions")
+    for t in txs[:10]:
+        print(f"  {t['tx_hash'][:16]}... {t['method']}  {t['amount']}  fee: {t['txn_fee']}  {t['age']}")
+
+
+def show_eth_tx_detail(sela: Selanet):
+    print("\n=== Etherscan: Transaction Detail ===")
+    tx = sela.run("etherscan/tx_detail", params={"hash": "0xab04bf5750485049f94f93057dd4adc8f3c901cb0218a78b901739be04a76776"})
+    print(f"  Hash: {tx['tx_hash']}")
+    print(f"  Status: {tx['status']}  Block: {tx['block']}")
+    print(f"  From: {tx['from']}  To: {tx['to']}")
+    print(f"  Value: {tx['value']}  Fee: {tx['transaction_fee']}")
+
+
+def show_eth_block_detail(sela: Selanet):
+    print("\n=== Etherscan: Block Detail ===")
+    b = sela.run("etherscan/block_detail", params={"block": "24777393"})
+    print(f"  Block: {b['block_height']}  Status: {b['status']}")
+    print(f"  Txns: {b['transactions']}  Gas: {b['gas_used']}/{b['gas_limit']}")
+    print(f"  Reward: {b['block_reward']}  Burnt: {b['burnt_fees']}")
+
+
 RECIPES = {
     # CoinGecko
     "token_prices": show_token_prices,
@@ -178,6 +223,13 @@ RECIPES = {
     "rd_projects": show_rd_projects,
     "rd_rankings_soaring": show_rd_rankings_soaring,
     "rd_token_unlocks": show_rd_token_unlocks,
+    # Etherscan
+    "eth_top_accounts": show_eth_top_accounts,
+    "eth_tokens": show_eth_tokens,
+    "eth_blocks": show_eth_blocks,
+    "eth_transactions": show_eth_transactions,
+    "eth_tx_detail": show_eth_tx_detail,
+    "eth_block_detail": show_eth_block_detail,
 }
 
 if __name__ == "__main__":

@@ -37,8 +37,15 @@ import { parseMarkdownTable as parseRdProjects } from "./rootdata/projects.js";
 import { parseMarkdownTable as parseRdRankingsSoaring } from "./rootdata/rankings_soaring.js";
 import { parseMarkdownTable as parseRdTokenUnlocks } from "./rootdata/token_unlocks.js";
 
+import { parseMarkdownTable as parseEthTopAccounts } from "./etherscan/top_accounts.js";
+import { parseMarkdownTable as parseEthTokens } from "./etherscan/tokens.js";
+import { parseMarkdownTable as parseEthBlocks } from "./etherscan/blocks.js";
+import { parseMarkdownTable as parseEthTransactions } from "./etherscan/transactions.js";
+import { parseTxDetail as parseEthTxDetail } from "./etherscan/tx_detail.js";
+import { parseBlockDetail as parseEthBlockDetail } from "./etherscan/block_detail.js";
+
 interface Recipe {
-  url: string;
+  url: string | ((params?: Record<string, string>) => string);
   parse: (markdown: string) => unknown;
 }
 
@@ -119,6 +126,30 @@ const recipes: Record<string, Recipe> = {
     url: "https://www.rootdata.com/token-unlocks",
     parse: parseRdTokenUnlocks,
   },
+  "etherscan/top_accounts": {
+    url: "https://etherscan.io/accounts",
+    parse: parseEthTopAccounts,
+  },
+  "etherscan/tokens": {
+    url: "https://etherscan.io/tokens",
+    parse: parseEthTokens,
+  },
+  "etherscan/blocks": {
+    url: "https://etherscan.io/blocks",
+    parse: parseEthBlocks,
+  },
+  "etherscan/transactions": {
+    url: "https://etherscan.io/txs",
+    parse: parseEthTransactions,
+  },
+  "etherscan/tx_detail": {
+    url: (params) => `https://etherscan.io/tx/${params?.hash ?? ""}`,
+    parse: parseEthTxDetail,
+  },
+  "etherscan/block_detail": {
+    url: (params) => `https://etherscan.io/block/${params?.block ?? ""}`,
+    parse: parseEthBlockDetail,
+  },
 };
 
 // -- IPC loop --
@@ -130,7 +161,7 @@ function respond(obj: unknown) {
 }
 
 rl.on("line", async (line) => {
-  let req: { recipe?: string };
+  let req: { recipe?: string; params?: Record<string, string> };
   try {
     req = JSON.parse(line);
   } catch {
@@ -149,7 +180,8 @@ rl.on("line", async (line) => {
 
   try {
     const recipe = recipes[id];
-    const data = await browse(recipe.url);
+    const url = typeof recipe.url === "function" ? recipe.url(req.params) : recipe.url;
+    const data = await browse(url);
     const markdown = data?.extracted_content ?? "";
     const result = recipe.parse(markdown);
     respond({ ok: true, result });
