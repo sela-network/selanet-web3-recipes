@@ -201,6 +201,107 @@ def show_eth_block_detail(sela: Selanet):
     print(f"  Reward: {b['block_reward']}  Burnt: {b['burnt_fees']}")
 
 
+def show_eth_address_detail(sela: Selanet):
+    print("\n=== Etherscan: Address Detail ===")
+    a = sela.run("etherscan/address_detail", params={"address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"})
+    print(f"  Address: {a['address']}  Name: {a['name']}")
+    print(f"  Balance: {a['eth_balance']}  Value: {a['eth_value']}")
+
+
+def show_eth_token_detail(sela: Selanet):
+    print("\n=== Etherscan: Token Detail ===")
+    t = sela.run("etherscan/token_detail", params={"token": "0xdac17f958d2ee523a2206206994597c13d831ec7"})
+    print(f"  Name: {t['name']}  Decimals: {t['decimals']}")
+    print(f"  Supply: {t['max_total_supply']}  Holders: {t['holders']}")
+    print(f"  Price: {t['price']}  MCap: {t['onchain_market_cap']}")
+
+
+def show_arc_accounts(sela: Selanet):
+    print("\n=== Arcscan: Top Accounts ===")
+    accounts = sela.run("arcscan/accounts")
+    for a in accounts[:10]:
+        print(f"  #{a['rank']} {a['address'][:16]}...  bal: {a['balance']}  txns: {a['txn_count']}")
+
+
+def show_arc_blocks(sela: Selanet):
+    print("\n=== Arcscan: Recent Blocks ===")
+    blocks = sela.run("arcscan/blocks")
+    for b in blocks[:10]:
+        print(f"  Block {b['block']}: {b['txn']} txns  gas {b['gas_used']}  {b['age']}")
+
+
+def show_arc_transactions(sela: Selanet):
+    print("\n=== Arcscan: Recent Transactions ===")
+    txs = sela.run("arcscan/transactions")
+    for t in txs[:10]:
+        print(f"  {t['tx_hash'][:16]}... {t['type']}  {t['value']}  fee: {t['fee']}")
+
+
+def show_arc_account_detail(sela: Selanet):
+    print("\n=== Arcscan: Account Detail ===")
+    a = sela.run("arcscan/account_detail", params={"address": "0x4f7A67464B5976d7547c860109e4432d50AfB38e"})
+    print(f"  Address: {a['address']}  Balance: {a['balance']}  Txns: {a['transactions']}")
+
+
+def show_arc_block_detail(sela: Selanet):
+    print("\n=== Arcscan: Block Detail ===")
+    b = sela.run("arcscan/block_detail", params={"block": "34746818"})
+    print(f"  Block: {b['block_height']}  Txns: {b['transactions']}  Gas: {b['gas_used']}/{b['gas_limit']}")
+
+
+def show_arc_tx_detail(sela: Selanet):
+    print("\n=== Arcscan: Transaction Detail ===")
+    t = sela.run("arcscan/tx_detail", params={"hash": "0x3f9699f86445110f99abfb7435a02a4153d1c42b637c7e4f6481eb4c0c6bdc5f"})
+    print(f"  Hash: {t['tx_hash'][:20]}...  Status: {t['status']}  Block: {t['block']}")
+    print(f"  From: {t['from']}  Value: {t['value']}  Fee: {t['transaction_fee']}")
+
+
+def show_arc_token_detail(sela: Selanet):
+    print("\n=== Arcscan: Token Detail ===")
+    t = sela.run("arcscan/token_detail", params={"token": "0x2B51Ae4412F79c3c1cB12AA40Ea4ECEb4e80511a"})
+    print(f"  Name: {t['name']}  Supply: {t['total_supply']}  Holders: {t['holders']}")
+
+
+def show_world_blocks(sela: Selanet):
+    print("\n=== Worldscan: Recent Blocks ===")
+    blocks = sela.run("worldscan/blocks")
+    for b in blocks[:10]:
+        print(f"  Block {b['block']}: {b['txn']} txns  gas {b['gas_used']}  {b['age']}")
+
+
+def show_world_transactions(sela: Selanet):
+    print("\n=== Worldscan: Recent Transactions ===")
+    txs = sela.run("worldscan/transactions")
+    for t in txs[:10]:
+        print(f"  {t['tx_hash'][:16]}... {t['action']}  {t['amount']}  fee: {t['txn_fee']}")
+
+
+def show_world_address_detail(sela: Selanet):
+    print("\n=== Worldscan: Address Detail ===")
+    a = sela.run("worldscan/address_detail", params={"address": "0xf8ac0baf3b528368334a3c8deddfa7f135f9e1ec"})
+    print(f"  Address: {a['address']}  Balance: {a['balance']}")
+    for h in a.get("token_holdings", [])[:5]:
+        print(f"    {h['token']}: {h['amount']} ({h['value']})")
+
+
+def show_world_block_detail(sela: Selanet):
+    print("\n=== Worldscan: Block Detail ===")
+    b = sela.run("worldscan/block_detail", params={"block": "27812998"})
+    print(f"  Block: {b['block_height']}  Txns: {b['transactions']}  Gas: {b['gas_used']}/{b['gas_limit']}")
+
+
+def show_world_tx_detail(sela: Selanet):
+    print("\n=== Worldscan: Transaction Detail ===")
+    t = sela.run("worldscan/tx_detail", params={"hash": "0x58064d272b6634bac928e733dc92f35f10b34cbd204e595281b2bcba480dfcc9"})
+    print(f"  Hash: {t['tx_hash'][:20]}...  Status: {t['status']}  Block: {t['block']}")
+
+
+def show_world_token_detail(sela: Selanet):
+    print("\n=== Worldscan: Token Detail ===")
+    t = sela.run("worldscan/token_detail", params={"token": "0x4200000000000000000000000000000000000006"})
+    print(f"  Name: {t['name']}  Supply: {t['max_total_supply']}  Holders: {t['holders']}")
+
+
 def show_l2_scaling_summary(sela: Selanet):
     print("\n=== L2Beat: Scaling Summary ===")
     l2s = sela.run("l2beat/scaling_summary")
@@ -244,6 +345,23 @@ RECIPES = {
     "eth_transactions": show_eth_transactions,
     "eth_tx_detail": show_eth_tx_detail,
     "eth_block_detail": show_eth_block_detail,
+    "eth_address_detail": show_eth_address_detail,
+    "eth_token_detail": show_eth_token_detail,
+    # Arcscan
+    "arc_accounts": show_arc_accounts,
+    "arc_blocks": show_arc_blocks,
+    "arc_transactions": show_arc_transactions,
+    "arc_account_detail": show_arc_account_detail,
+    "arc_block_detail": show_arc_block_detail,
+    "arc_tx_detail": show_arc_tx_detail,
+    "arc_token_detail": show_arc_token_detail,
+    # Worldscan
+    "world_blocks": show_world_blocks,
+    "world_transactions": show_world_transactions,
+    "world_address_detail": show_world_address_detail,
+    "world_block_detail": show_world_block_detail,
+    "world_tx_detail": show_world_tx_detail,
+    "world_token_detail": show_world_token_detail,
     # L2Beat
     "l2_scaling_summary": show_l2_scaling_summary,
     "l2_scaling_risk": show_l2_scaling_risk,

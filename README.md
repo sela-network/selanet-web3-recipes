@@ -29,6 +29,29 @@ A collection of example code for scraping data from major Web3 sites using the S
 | `transactions.ts` | Recent Ethereum transactions |
 | `tx_detail.ts` | Detailed info for a specific transaction |
 | `block_detail.ts` | Detailed info for a specific block |
+| `address_detail.ts` | Detailed info for a specific address |
+| `token_detail.ts` | Detailed info for a specific ERC-20 token |
+
+### Arcscan (Arc Testnet)
+| Recipe | Description |
+|--------|-------------|
+| `accounts.ts` | Top accounts by balance |
+| `blocks.ts` | Recent blocks |
+| `transactions.ts` | Recent transactions |
+| `account_detail.ts` | Detailed info for a specific address |
+| `block_detail.ts` | Detailed info for a specific block |
+| `tx_detail.ts` | Detailed info for a specific transaction |
+| `token_detail.ts` | Detailed info for a specific token |
+
+### Worldscan (World Chain)
+| Recipe | Description |
+|--------|-------------|
+| `blocks.ts` | Recent blocks |
+| `transactions.ts` | Recent transactions |
+| `address_detail.ts` | Detailed info for a specific address with token holdings |
+| `block_detail.ts` | Detailed info for a specific block |
+| `tx_detail.ts` | Detailed info for a specific transaction |
+| `token_detail.ts` | Detailed info for a specific token |
 
 ### RootData
 | Recipe | Description |
@@ -93,6 +116,8 @@ selanet-web3-recipes/
         ├── coingecko/     # CoinGecko recipes
         ├── etherscan/     # Etherscan recipes
         ├── rootdata/      # RootData recipes
+        ├── arcscan/       # Arc Testnet recipes
+        ├── worldscan/     # World Chain recipes
         ├── l2beat/        # L2Beat recipes
         └── utils.ts       # Shared Selanet API helpers
 ```

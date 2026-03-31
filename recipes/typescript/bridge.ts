@@ -44,6 +44,24 @@ import { parseMarkdownTable as parseEthTransactions } from "./etherscan/transact
 import { parseTxDetail as parseEthTxDetail } from "./etherscan/tx_detail.js";
 import { parseBlockDetail as parseEthBlockDetail } from "./etherscan/block_detail.js";
 
+import { parseAddressDetail as parseEthAddressDetail } from "./etherscan/address_detail.js";
+import { parseTokenDetail as parseEthTokenDetail } from "./etherscan/token_detail.js";
+
+import { parseMarkdownTable as parseArcAccounts } from "./arcscan/accounts.js";
+import { parseMarkdownTable as parseArcBlocks } from "./arcscan/blocks.js";
+import { parseMarkdownTable as parseArcTransactions } from "./arcscan/transactions.js";
+import { parseAccountDetail as parseArcAccountDetail } from "./arcscan/account_detail.js";
+import { parseBlockDetail as parseArcBlockDetail } from "./arcscan/block_detail.js";
+import { parseTxDetail as parseArcTxDetail } from "./arcscan/tx_detail.js";
+import { parseTokenDetail as parseArcTokenDetail } from "./arcscan/token_detail.js";
+
+import { parseMarkdownTable as parseWorldBlocks } from "./worldscan/blocks.js";
+import { parseMarkdownTable as parseWorldTransactions } from "./worldscan/transactions.js";
+import { parseAddressDetail as parseWorldAddressDetail } from "./worldscan/address_detail.js";
+import { parseBlockDetail as parseWorldBlockDetail } from "./worldscan/block_detail.js";
+import { parseTxDetail as parseWorldTxDetail } from "./worldscan/tx_detail.js";
+import { parseTokenDetail as parseWorldTokenDetail } from "./worldscan/token_detail.js";
+
 import { parseMarkdownTable as parseL2ScalingSummary } from "./l2beat/scaling_summary.js";
 import { parseMarkdownTable as parseL2ScalingRisk } from "./l2beat/scaling_risk.js";
 
@@ -152,6 +170,66 @@ const recipes: Record<string, Recipe> = {
   "etherscan/block_detail": {
     url: (params) => `https://etherscan.io/block/${params?.block ?? ""}`,
     parse: parseEthBlockDetail,
+  },
+  "etherscan/address_detail": {
+    url: (params) => `https://etherscan.io/address/${params?.address ?? ""}`,
+    parse: parseEthAddressDetail,
+  },
+  "etherscan/token_detail": {
+    url: (params) => `https://etherscan.io/token/${params?.token ?? ""}`,
+    parse: parseEthTokenDetail,
+  },
+  "arcscan/accounts": {
+    url: "https://testnet.arcscan.app/accounts",
+    parse: parseArcAccounts,
+  },
+  "arcscan/blocks": {
+    url: "https://testnet.arcscan.app/blocks",
+    parse: parseArcBlocks,
+  },
+  "arcscan/transactions": {
+    url: "https://testnet.arcscan.app/txs",
+    parse: parseArcTransactions,
+  },
+  "arcscan/account_detail": {
+    url: (params) => `https://testnet.arcscan.app/address/${params?.address ?? ""}`,
+    parse: parseArcAccountDetail,
+  },
+  "arcscan/block_detail": {
+    url: (params) => `https://testnet.arcscan.app/block/${params?.block ?? ""}`,
+    parse: parseArcBlockDetail,
+  },
+  "arcscan/tx_detail": {
+    url: (params) => `https://testnet.arcscan.app/tx/${params?.hash ?? ""}`,
+    parse: parseArcTxDetail,
+  },
+  "arcscan/token_detail": {
+    url: (params) => `https://testnet.arcscan.app/token/${params?.token ?? ""}`,
+    parse: parseArcTokenDetail,
+  },
+  "worldscan/blocks": {
+    url: "https://worldscan.org/blocks",
+    parse: parseWorldBlocks,
+  },
+  "worldscan/transactions": {
+    url: "https://worldscan.org/txs",
+    parse: parseWorldTransactions,
+  },
+  "worldscan/address_detail": {
+    url: (params) => `https://worldscan.org/address/${params?.address ?? ""}`,
+    parse: parseWorldAddressDetail,
+  },
+  "worldscan/block_detail": {
+    url: (params) => `https://worldscan.org/block/${params?.block ?? ""}`,
+    parse: parseWorldBlockDetail,
+  },
+  "worldscan/tx_detail": {
+    url: (params) => `https://worldscan.org/tx/${params?.hash ?? ""}`,
+    parse: parseWorldTxDetail,
+  },
+  "worldscan/token_detail": {
+    url: (params) => `https://worldscan.org/token/${params?.token ?? ""}`,
+    parse: parseWorldTokenDetail,
   },
   "l2beat/scaling_summary": {
     url: "https://l2beat.com/scaling/summary",
