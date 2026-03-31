@@ -104,14 +104,12 @@ async function main() {
 
   console.log(`Searching X for "${fullQuery}"...\n`);
   const data = await browseX(url, opts.count || 10);
+  const posts = parseTweets(data);
 
-  if (data?.page_type === "login_required") {
-    console.error("Login required. Search needs an authenticated session.");
-    console.error("Profile pages (x.com/{username}) work without login.");
-    return;
+  if (posts.length === 0 && data?.page_type === "login_required") {
+    console.error("Login required for this search. Try x/profile.ts for public profiles.");
   }
 
-  const posts = parseTweets(data);
   console.log(JSON.stringify(posts, null, 2));
 }
 

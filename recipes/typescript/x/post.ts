@@ -10,14 +10,14 @@
  */
 
 import "dotenv/config";
-import { browseX, type Tweet } from "./utils.js";
+import { browseX, mapTweet, type Tweet } from "./utils.js";
 
 interface PostDetail {
   post: Tweet | null;
   replies: Tweet[];
 }
 
-function parsePost(data: any): PostDetail {
+export function parsePost(data: any): PostDetail {
   const content = data?.content;
   if (!Array.isArray(content)) return { post: null, replies: [] };
 
@@ -26,55 +26,22 @@ function parsePost(data: any): PostDetail {
 
   for (const item of content) {
     if (!item.fields) continue;
-    const f = item.fields;
-    const tweet: Tweet = {
-      author_name: f.author_name || "",
-      author_username: f.author_username || "",
-      author_profile_image: f.author_profile_image_url || "",
-      text: f.text || "",
-      created_at: f.created_at || "",
-      link: f.link ? `https://x.com${f.link}` : "",
-      like_count: f.like_count || 0,
-      reply_count: f.reply_count || 0,
-      retweet_count: f.retweet_count || 0,
-      impression_count: f.impression_count || 0,
-      verified: f.verified || false,
-      social_context: f.social_context || "",
-    };
 
-    if (item.content_type === "tweet" && item.role === "article") {
-      post = tweet;
+    if (item.content_type === "tweet" && item.role === "article" && !post) {
+      post = mapTweet(item.fields);
     } else if (item.content_type === "reply" || item.role === "comment") {
-      replies.push(tweet);
+      replies.push(mapTweet(item.fields));
     }
   }
 
-  // If no article-role tweet found, take the first tweet
+  // Fallback: first tweet if no article-role found
   if (!post) {
     const first = content.find((i: any) => i.content_type === "tweet" && i.fields);
-    if (first) {
-      const f = first.fields;
-      post = {
-        author_name: f.author_name || "",
-        author_username: f.author_username || "",
-        author_profile_image: f.author_profile_image_url || "",
-        text: f.text || "",
-        created_at: f.created_at || "",
-        link: f.link ? `https://x.com${f.link}` : "",
-        like_count: f.like_count || 0,
-        reply_count: f.reply_count || 0,
-        retweet_count: f.retweet_count || 0,
-        impression_count: f.impression_count || 0,
-        verified: f.verified || false,
-        social_context: f.social_context || "",
-      };
-    }
+    if (first) post = mapTweet(first.fields);
   }
 
   return { post, replies };
 }
-
-export { parsePost };
 
 async function main() {
   let input = process.argv[2] || "https://x.com/VitalikButerin/status/2036225236798959737";
