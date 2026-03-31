@@ -1,12 +1,12 @@
 /**
- * Recipe: Profile Tweets from X (Twitter)
- * Scrapes recent tweets from a user's profile.
+ * Recipe: Profile from X (Twitter)
+ * Scrapes recent posts from a user's profile.
  *
  * URL: https://x.com/{username}
  * Usage:
  *   export SELA_API_KEY=sk_live_xxx
- *   npx tsx x/profile_tweets.ts VitalikButerin
- *   npx tsx x/profile_tweets.ts ethereum
+ *   npx tsx x/profile.ts VitalikButerin
+ *   npx tsx x/profile.ts ethereum 20
  */
 
 import "dotenv/config";
@@ -19,11 +19,11 @@ async function main() {
   const count = parseInt(process.argv[3] || "10", 10);
   const url = `https://x.com/${username}`;
 
-  console.log(`Fetching tweets from @${username}...\n`);
+  console.log(`Fetching posts from @${username}...\n`);
   const data = await browseX(url, count);
-  const tweets = parseTweets(data);
-  console.log(JSON.stringify(tweets, null, 2));
+  const posts = parseTweets(data);
+  console.log(JSON.stringify(posts, null, 2));
 }
 
-const isDirectRun = process.argv[1]?.endsWith("profile_tweets.ts") || process.argv[1]?.endsWith("profile_tweets.js");
+const isDirectRun = process.argv[1]?.endsWith("profile.ts") || process.argv[1]?.endsWith("profile.js");
 if (isDirectRun) main();

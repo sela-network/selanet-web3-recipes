@@ -302,23 +302,37 @@ def show_world_token_detail(sela: Selanet):
     print(f"  Name: {t['name']}  Supply: {t['max_total_supply']}  Holders: {t['holders']}")
 
 
-def show_x_profile_tweets(sela: Selanet):
-    print("\n=== X: Profile Tweets ===")
-    tweets = sela.run("x/profile_tweets", params={"username": "VitalikButerin", "count": "5"})
-    for t in tweets[:5]:
+def show_x_profile(sela: Selanet):
+    print("\n=== X: Profile ===")
+    posts = sela.run("x/profile", params={"username": "VitalikButerin", "count": "5"})
+    for t in posts[:5]:
         print(f"  @{t['author_username']}  {t['text'][:80]}...")
-        print(f"    ❤️ {t['like_count']}  🔁 {t['retweet_count']}  💬 {t['reply_count']}")
+        print(f"    likes {t['like_count']}  retweets {t['retweet_count']}  replies {t['reply_count']}")
 
 
-def show_x_search_tweets(sela: Selanet):
-    print("\n=== X: Search Tweets ===")
-    tweets = sela.run("x/search_tweets", params={"query": "ethereum", "count": "5"})
-    if not tweets:
+def show_x_search(sela: Selanet):
+    print("\n=== X: Search ===")
+    posts = sela.run("x/search", params={"query": "$ETH min_faves:100", "count": "5"})
+    if not posts:
         print("  (Login required for search, or no results)")
         return
-    for t in tweets[:5]:
+    for t in posts[:5]:
         print(f"  @{t['author_username']}  {t['text'][:80]}...")
-        print(f"    ❤️ {t['like_count']}  🔁 {t['retweet_count']}  💬 {t['reply_count']}")
+        print(f"    likes {t['like_count']}  retweets {t['retweet_count']}  replies {t['reply_count']}")
+
+
+def show_x_post(sela: Selanet):
+    print("\n=== X: Post Detail ===")
+    result = sela.run("x/post", params={"url": "https://x.com/corcoranwill/status/2036225236798959737"})
+    post = result.get("post")
+    if post:
+        print(f"  @{post['author_username']}  {post['text'][:100]}...")
+        print(f"    likes {post['like_count']}  retweets {post['retweet_count']}  replies {post['reply_count']}")
+    replies = result.get("replies", [])
+    if replies:
+        print(f"  Replies ({len(replies)}):")
+        for r in replies[:3]:
+            print(f"    @{r['author_username']}: {r['text'][:60]}...")
 
 
 def show_l2_scaling_summary(sela: Selanet):
@@ -382,8 +396,9 @@ RECIPES = {
     "world_tx_detail": show_world_tx_detail,
     "world_token_detail": show_world_token_detail,
     # X (Twitter)
-    "x_profile_tweets": show_x_profile_tweets,
-    "x_search_tweets": show_x_search_tweets,
+    "x_profile": show_x_profile,
+    "x_search": show_x_search,
+    "x_post": show_x_post,
     # L2Beat
     "l2_scaling_summary": show_l2_scaling_summary,
     "l2_scaling_risk": show_l2_scaling_risk,

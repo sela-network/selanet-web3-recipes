@@ -62,7 +62,8 @@ import { parseBlockDetail as parseWorldBlockDetail } from "./worldscan/block_det
 import { parseTxDetail as parseWorldTxDetail } from "./worldscan/tx_detail.js";
 import { parseTokenDetail as parseWorldTokenDetail } from "./worldscan/token_detail.js";
 
-import { parseTweets as parseXTweets } from "./x/profile_tweets.js";
+import { parseTweets as parseXTweets } from "./x/profile.js";
+import { parsePost as parseXPost } from "./x/post.js";
 import { browseX } from "./x/utils.js";
 
 import { parseMarkdownTable as parseL2ScalingSummary } from "./l2beat/scaling_summary.js";
@@ -244,14 +245,19 @@ const recipes: Record<string, Recipe> = {
     url: "https://l2beat.com/scaling/risk",
     parse: parseL2ScalingRisk,
   },
-  "x/profile_tweets": {
+  "x/profile": {
     url: (params) => `https://x.com/${params?.username ?? "VitalikButerin"}`,
     parse: parseXTweets,
     xMode: true,
   },
-  "x/search_tweets": {
+  "x/search": {
     url: (params) => `https://x.com/search?q=${encodeURIComponent(params?.query ?? "ethereum")}&src=typed_query&f=live`,
     parse: parseXTweets,
+    xMode: true,
+  },
+  "x/post": {
+    url: (params) => params?.url ?? `https://x.com/${params?.username ?? ""}/${params?.id ? `status/${params.id}` : ""}`,
+    parse: parseXPost,
     xMode: true,
   },
 };

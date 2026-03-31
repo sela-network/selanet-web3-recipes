@@ -67,8 +67,9 @@ A collection of example code for scraping data from major Web3 sites using the S
 ### X (Twitter)
 | Recipe | Description |
 |--------|-------------|
-| `profile_tweets.ts` | Recent tweets from a user profile |
-| `search_tweets.ts` | Search tweets by query (requires login session) |
+| `profile.ts` | Recent posts from a user profile |
+| `search.ts` | Search posts with advanced operators (from:, $TICKER, min_faves:, since:, etc.) |
+| `post.ts` | Single post detail with replies |
 
 ### L2Beat
 | Recipe | Description |
