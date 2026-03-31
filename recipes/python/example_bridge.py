@@ -311,8 +311,14 @@ def show_x_profile(sela: Selanet):
 
 
 def show_x_search(sela: Selanet):
-    print("\n=== X: Search ===")
-    posts = sela.run("x/search", params={"query": "$ETH min_faves:100", "count": "5"})
+    print("\n=== X: Search (advanced) ===")
+    posts = sela.run("x/search", params={
+        "query": "ethereum",
+        "from": "VitalikButerin",
+        "min_faves": "100",
+        "since": "2026-03-01",
+        "count": "5",
+    })
     if not posts:
         print("  (Login required for search, or no results)")
         return

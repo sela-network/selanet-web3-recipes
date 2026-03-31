@@ -63,6 +63,7 @@ import { parseTxDetail as parseWorldTxDetail } from "./worldscan/tx_detail.js";
 import { parseTokenDetail as parseWorldTokenDetail } from "./worldscan/token_detail.js";
 
 import { parseTweets as parseXTweets } from "./x/profile.js";
+import { parseTweets as parseXSearchTweets, buildSearchUrl } from "./x/search.js";
 import { parsePost as parseXPost } from "./x/post.js";
 import { browseX } from "./x/utils.js";
 
@@ -251,8 +252,21 @@ const recipes: Record<string, Recipe> = {
     xMode: true,
   },
   "x/search": {
-    url: (params) => `https://x.com/search?q=${encodeURIComponent(params?.query ?? "ethereum")}&src=typed_query&f=live`,
-    parse: parseXTweets,
+    url: (params) => buildSearchUrl({
+      query: params?.query ?? "ethereum",
+      from: params?.from,
+      to: params?.to,
+      mention: params?.mention,
+      min_faves: params?.min_faves ? parseInt(params.min_faves, 10) : undefined,
+      min_replies: params?.min_replies ? parseInt(params.min_replies, 10) : undefined,
+      min_retweets: params?.min_retweets ? parseInt(params.min_retweets, 10) : undefined,
+      since: params?.since,
+      until: params?.until,
+      lang: params?.lang,
+      filter: params?.filter,
+      exclude: params?.exclude,
+    }),
+    parse: parseXSearchTweets,
     xMode: true,
   },
   "x/post": {
