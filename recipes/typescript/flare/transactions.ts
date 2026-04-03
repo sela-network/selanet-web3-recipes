@@ -58,26 +58,41 @@ export function parseTransactions(markdown: string): FlareTransaction[] {
 
     for (let j = 0; j < context.length; j++) {
       const l = context[j];
+      const next = context[j + 1] || "";
       if (!age && /ago$/.test(l)) age = l;
-      if (l.startsWith("Method")) method = l.replace("Method", "").trim();
-      if (l.startsWith("Block")) {
+      // Method label on its own line, value on next line (e.g., "0x7577109d")
+      if (l === "Method" || l.startsWith("Method")) {
+        const inline = l.replace("Method", "").trim();
+        if (inline) method = inline;
+        else if (next.match(/^0x[0-9a-fA-F]+$/)) { method = next; j++; }
+      }
+      // Block label on its own line, value as link on next line
+      if (l === "Block" || l.startsWith("Block")) {
         const bm = l.match(/\[(\d+)\]/);
         if (bm) block = bm[1];
+        else {
+          const bnm = next.match(/\[(\d+)\]/);
+          if (bnm) { block = bnm[1]; j++; }
+        }
       }
-      if (l.startsWith("From") || l.startsWith("from")) {
-        const fm = l.match(/\[([^\]]+)\]/);
-        if (fm) from = fm[1];
+      // Address links: first one is From, second is To
+      const addrMatch = l.match(/\[(0x[A-Fa-f0-9.]+)\]\(https:\/\/flare-explorer/);
+      if (addrMatch) {
+        if (!from) from = addrMatch[1];
+        else if (!to) to = addrMatch[1];
       }
-      if (l.startsWith("To") || l === "To") {
-        const next = context[j + 1] || "";
-        const tm = (l + " " + next).match(/\[([^\]]+)\]/);
-        if (tm) to = tm[1];
+      // Value: label on own line, amount on next (e.g., "0 FLR")
+      if (l === "Value" || l.startsWith("Value")) {
+        const inline = l.replace("Value", "").trim();
+        if (inline) value = inline;
+        else if (next.match(/[\d.]+\s*FLR/)) { value = next; j++; }
       }
-      if (l.startsWith("Value") || /^\d.*FLR$/.test(l)) {
-        if (l.startsWith("Value")) value = l.replace("Value", "").trim();
-        else if (!value) value = l;
+      // Fee: label on own line, amount on next
+      if (l === "Fee" || l.startsWith("Fee")) {
+        const inline = l.replace("Fee", "").trim();
+        if (inline) fee = inline;
+        else if (next.match(/[\d.]+\s*FLR/)) { fee = next; j++; }
       }
-      if (l.startsWith("Fee") || /fee/i.test(l)) fee = l.replace(/Fee/i, "").trim();
     }
 
     results.push({ tx_hash: txHash, tx_url: txUrl, type, method, block, age, from, to, value, fee });
