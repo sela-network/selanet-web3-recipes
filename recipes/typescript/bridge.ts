@@ -70,11 +70,17 @@ import { browseX } from "./x/utils.js";
 import { parseMarkdownTable as parseL2ScalingSummary } from "./l2beat/scaling_summary.js";
 import { parseMarkdownTable as parseL2ScalingRisk } from "./l2beat/scaling_risk.js";
 
+import { parseTokens as parseUniswapTokens } from "./uniswap/tokens.js";
+import { parsePools as parseUniswapPools } from "./uniswap/pools.js";
+import { parseAuctions as parseUniswapAuctions } from "./uniswap/auctions.js";
+
 interface Recipe {
   url: string | ((params?: Record<string, string>) => string);
   parse: (data: any) => unknown;
   /** Use browseX (parse_only mode) instead of browse (markdown mode) */
   xMode?: boolean;
+  /** Use check_idle: true for SPA pages that need idle detection */
+  checkIdle?: boolean;
 }
 
 const recipes: Record<string, Recipe> = {
@@ -246,6 +252,24 @@ const recipes: Record<string, Recipe> = {
     url: "https://l2beat.com/scaling/risk",
     parse: parseL2ScalingRisk,
   },
+  "uniswap/tokens": {
+    url: (params) =>
+      `https://app.uniswap.org/explore/tokens/${params?.chain ?? "ethereum"}?lng=en`,
+    parse: parseUniswapTokens,
+    checkIdle: true,
+  },
+  "uniswap/pools": {
+    url: (params) =>
+      `https://app.uniswap.org/explore/pools/${params?.chain ?? "ethereum"}?lng=en`,
+    parse: parseUniswapPools,
+    checkIdle: true,
+  },
+  "uniswap/auctions": {
+    url: (params) =>
+      `https://app.uniswap.org/explore/auctions/${params?.chain ?? "ethereum"}?lng=en`,
+    parse: parseUniswapAuctions,
+    checkIdle: true,
+  },
   "x/profile": {
     url: (params) => `https://x.com/${params?.username ?? "VitalikButerin"}`,
     parse: parseXTweets,
@@ -311,7 +335,7 @@ rl.on("line", async (line) => {
       const data = await browseX(url, count);
       result = recipe.parse(data);
     } else {
-      const data = await browse(url);
+      const data = await browse(url, recipe.checkIdle ? { check_idle: true } : "markdown");
       const markdown = data?.extracted_content ?? "";
       result = recipe.parse(markdown);
     }

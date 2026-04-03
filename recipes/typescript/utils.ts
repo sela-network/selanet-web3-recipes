@@ -23,14 +23,32 @@ function getHeaders(): Record<string, string> {
   };
 }
 
+export interface BrowseOptions {
+  extract_format?: string;
+  check_idle?: boolean;
+  delay_ms?: number;
+}
+
 export async function browse(
   url: string,
-  extractFormat: string = "markdown"
+  extractFormatOrOptions: string | BrowseOptions = "markdown"
 ): Promise<any> {
+  const opts: BrowseOptions =
+    typeof extractFormatOrOptions === "string"
+      ? { extract_format: extractFormatOrOptions }
+      : extractFormatOrOptions;
+
+  const body: Record<string, unknown> = {
+    url,
+    extract_format: opts.extract_format ?? "markdown",
+  };
+  if (opts.check_idle) body.check_idle = true;
+  if (opts.delay_ms) body.delay_ms = opts.delay_ms;
+
   const resp = await fetch(`${SELA_BASE_URL}/browse`, {
     method: "POST",
     headers: getHeaders(),
-    body: JSON.stringify({ url, extract_format: extractFormat }),
+    body: JSON.stringify(body),
   });
   if (!resp.ok) throw new Error(`Selanet API error: ${resp.status}`);
   return resp.json();
